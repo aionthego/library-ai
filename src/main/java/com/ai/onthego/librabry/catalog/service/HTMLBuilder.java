@@ -7,6 +7,14 @@ public class HTMLBuilder {
             "    <meta charset=\"UTF-8\">\n" +
             "    <title>Library Catalog integration with Generative AI</title>\n" +
             "<style>\n" +
+            "        body {\n" +
+            "            width: 70%;\n" +
+            "            margin: 10px 10px 10px;\n" +
+            "            padding: 5px 5px 5px 5px;\n" +
+            "            background-color: #EEEEEE;\n" +
+            "        }" +
+            "        p { background-color: #004444; color: #FFFFFF; margin: 10px 10px 10px 10px;" +
+            "        }"+
             "        input[type=text] {\n" +
             "          width: 50%;\n" +
             "          padding: 12px 20px 5px 5px;\n" +
