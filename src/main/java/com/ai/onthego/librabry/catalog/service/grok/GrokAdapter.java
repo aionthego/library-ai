@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class GrokAdapter {
@@ -36,7 +37,7 @@ public class GrokAdapter {
 
     public String fetch(String prompt) throws IOException {
         StringBuilder sb = new StringBuilder();
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
         String json = PAYLOAD1+prompt+PAYLOAD2;
         RequestBody body = RequestBody.create(json, JSON);
         Request request = new Request.Builder()
