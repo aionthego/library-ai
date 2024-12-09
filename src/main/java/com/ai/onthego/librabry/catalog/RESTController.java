@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+import java.util.Map;
+
 @RestController
 public class RESTController {
 
@@ -37,6 +40,12 @@ public class RESTController {
     @GetMapping("/ai")
     public ResponseEntity<String> reset() {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(HTMLBuilder.getForm(), HttpStatusCode.valueOf(200));
+        return responseEntity;
+    }
+
+    @GetMapping("/metrics")
+    public ResponseEntity<Map<Date, String>> metrics() {
+        ResponseEntity<Map<Date, String>> responseEntity = new ResponseEntity<>(genAIService.getMetrics(), HttpStatusCode.valueOf(200));
         return responseEntity;
     }
 }
