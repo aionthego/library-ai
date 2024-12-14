@@ -4,15 +4,12 @@ import com.ai.onthego.librabry.catalog.service.GenAIService;
 import com.ai.onthego.librabry.catalog.service.HTMLBuilder;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 @RestController
+@RequestMapping("/library-ai")
 public class RESTController {
 
     private final GenAIService genAIService;
@@ -21,7 +18,7 @@ public class RESTController {
         this.genAIService = genAIService;
     }
 
-    @PostMapping("/ai")
+    @PostMapping("/paloalto")
     public ResponseEntity<String> generate(@RequestParam(value = "message") String message) {
         ResponseEntity<String> responseEntity = null;
         if(message != null && message.length() > 3){
@@ -37,15 +34,15 @@ public class RESTController {
         return responseEntity;
     }
 
-    @GetMapping("/ai")
+    @GetMapping("/paloalto")
     public ResponseEntity<String> reset() {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(HTMLBuilder.getForm(), HttpStatusCode.valueOf(200));
         return responseEntity;
     }
 
     @GetMapping("/metrics")
-    public ResponseEntity<Map<Date, String>> metrics() {
-        ResponseEntity<Map<Date, String>> responseEntity = new ResponseEntity<>(genAIService.getMetrics(), HttpStatusCode.valueOf(200));
+    public ResponseEntity<List<String>> metrics() {
+        ResponseEntity<List<String>> responseEntity = new ResponseEntity<>(genAIService.getMetrics(), HttpStatusCode.valueOf(200));
         return responseEntity;
     }
 }

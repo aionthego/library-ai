@@ -5,13 +5,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class GenAIService {
+    public static final String SPACE = " ";
     private final GrokAdapter grokAdapter;
-    private static Map<Date, String> metrics = new HashMap<>();
+    private static List<String> metrics = new LinkedList<>();
 
     public GenAIService(GrokAdapter grokAdapter) {
         this.grokAdapter = grokAdapter;
@@ -20,7 +21,7 @@ public class GenAIService {
     public String fetch(String message) throws RuntimeException {
         String response = null;
         try {
-            metrics.put(new Date(), message);
+            metrics.add(new Date() + SPACE + message);
             response = grokAdapter.fetch(message);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -32,7 +33,7 @@ public class GenAIService {
         return sb.toString();
     }
 
-    public Map<Date, String> getMetrics() {
+    public List<String> getMetrics() {
         return metrics;
     }
 }

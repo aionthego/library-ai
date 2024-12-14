@@ -37,7 +37,7 @@ public class HTMLBuilder {
             "</head>\n" +
             "<body>\n" +
             "<h1>Library Catalog integration with Generative AI</h1>";
-    public static final String BOTTOM_HTML = "<form action=\"/ai\" method=\"post\">\n" +
+    public static final String BOTTOM_HTML = "<form action=\"/library-ai/paloalto\" method=\"post\">\n" +
             "    <input type=\"text\" width=\"80%\" name=\"message\"><br>\n" +
             "    <button type=\"submit\">Ask AI</button>\n" +
             "\n" +
