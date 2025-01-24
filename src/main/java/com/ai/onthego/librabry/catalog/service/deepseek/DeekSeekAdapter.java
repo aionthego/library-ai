@@ -1,4 +1,4 @@
-package com.ai.onthego.librabry.catalog.service.grok;
+package com.ai.onthego.librabry.catalog.service.deepseek;
 
 import com.ai.onthego.librabry.catalog.SensitiveInfo;
 import okhttp3.*;
@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class GrokAdapter {
+public class DeekSeekAdapter {
     private final SensitiveInfo sensitiveInfo;
     public static final MediaType JSON = MediaType.get("application/json");
-    public static final String GROK_API_ENDPOINT = "https://api.x.ai/v1/chat/completions";
+    public static final String GROK_API_ENDPOINT = "https://api.deepseek.com/chat/completions";
     public static final String AUTHORIZATION ="Authorization";
     public static final String BEARER = "Bearer ";
     public static final String PAYLOAD1 = "{" +
@@ -25,12 +25,12 @@ public class GrokAdapter {
             "            \"role\": \"user\"," +
             "            \"content\":\"";
     public static final String PAYLOAD2 = "\" }]," +
-            "    \"model\": \"grok-beta\"," +
+            "    \"model\": \"deepseek-chat\"," +
             "    \"stream\": false," +
             "    \"temperature\": 0" +
             "}";
 
-    public GrokAdapter(SensitiveInfo sensitiveInfo) {
+    public DeekSeekAdapter(SensitiveInfo sensitiveInfo) {
         this.sensitiveInfo = sensitiveInfo;
     }
 
@@ -42,21 +42,28 @@ public class GrokAdapter {
         RequestBody body = RequestBody.create(json, JSON);
         Request request = new Request.Builder()
                 .url(GROK_API_ENDPOINT)
-                .addHeader(AUTHORIZATION, BEARER + sensitiveInfo.getGrokKey())
+                .addHeader(AUTHORIZATION, BEARER + sensitiveInfo.getDeepSeekKey())
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
             System.out.println(response.code());
-            String grokresponse = response.body().string();
-            System.out.println(grokresponse);
-            JSONObject jsonObject = new JSONObject(grokresponse);
-            JSONArray jsonArray = jsonObject.getJSONArray("choices");
-            JSONObject choice = jsonArray.getJSONObject(0);
-            JSONObject message =    choice.getJSONObject("message");
-            String content = message.getString("content");
-            content = content.replace("\n", "<br>");
-            content = content.replace("**", "");
-            sb.append(content);
+            String apiresponse = response.body().string();
+            System.out.println(apiresponse);
+            if(response.code() == 200){
+                JSONObject jsonObject = new JSONObject(apiresponse);
+                JSONArray jsonArray = jsonObject.getJSONArray("choices");
+                JSONObject choice = jsonArray.getJSONObject(0);
+                JSONObject message =    choice.getJSONObject("message");
+                String content = message.getString("content");
+                content = content.replace("\n", "<br>");
+                content = content.replace("**", "");
+                sb.append(content);
+            } else {
+                sb.append(apiresponse);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return sb.toString();
     }
